@@ -6,7 +6,10 @@ class StackEnvConfig:
         validate_env_vars(
             "PROJECT_NAME",
             "PROJECT_OWNER",
-            "AWS_APATITE_SANDBOX_ACCOUNT_ID",
+            "BUCKET_TERRAFORM_STATE_NAME",
+            "BUCKET_WEBSITE_TEST_NAME",
+            "BUCKET_WEBSITE_PROD_NAME",
+            "AWS_APATITE_PROD_ACCOUNT_ID",
             "AWS_REGION",
         )
         self.project_owner = os.getenv("PROJECT_OWNER")
@@ -17,12 +20,25 @@ class StackEnvConfig:
         self.environment = environment
         self.application_id_tag = os.getenv("PROJECT_NAME")
 
+        self.terraform_state_bucket_name = os.getenv("BUCKET_TERRAFORM_STATE_NAME")
+
+        
+
+        self.test_website_bucket_name = os.getenv("BUCKET_WEBSITE_TEST_NAME")
+        self.dev_website_bucket_name = os.getenv("BUCKET_WEBSITE_DEV_NAME")
+        self.prod_website_bucket_name = os.getenv("BUCKET_WEBSITE_PROD_NAME")
+        self.tags = {
+            "Project": self.project_name,
+            "Owner": self.project_owner,
+            "Environment": self.environment,
+        }
+
 class stackConfig:
     def __init__(self, project_name):
-        self.sandbox = StackEnvConfig(
+        self.prod = StackEnvConfig(
             project_name = project_name,
-            environment = "sandbox",
-            aws_account = os.getenv("AWS_APATITE_SANDBOX_ACCOUNT_ID")
+            environment = "prod",
+            aws_account = os.getenv("AWS_APATITE_PROD_ACCOUNT_ID")
         )
 
 stack_config = {
